@@ -3,6 +3,7 @@ package product
 import (
 	errDomain "go-clean-arc-sauna-shop-app/app/domain/error" //パッケージをエイリアス化
 	"go-clean-arc-sauna-shop-app/pkg/ulid"
+	"unicode/utf8"
 )
 
 type Product struct {
@@ -30,9 +31,16 @@ func newProduct(
 	price int64,
 	stock int) (*Product, error) {
 
-	// ownerIDのバリデーション
 	if !ulid.Isvalid(ownerID) {
 		return nil, errDomain.NewError("オーナーIDの値が不正です 。")
+	}
+
+	if utf8.RuneCountInString(name) < nameLengthMin || utf8.RuneCountInString(name) > nameLengthMax {
+		return nil, errDomain.NewError("商品名の値が不正です 。")
+	}
+
+	if utf8.RuneCountInString(description) < descriptionLengthMin || utf8.RuneCountInString(description) > descriptionLengthMax {
+		return nil, errDomain.NewError("商品説明の値が不正です 。")
 	}
 
 	return &Product{
