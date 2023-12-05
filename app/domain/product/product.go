@@ -43,6 +43,15 @@ func newProduct(
 		return nil, errDomain.NewError("商品説明の値が不正です 。")
 	}
 
+	if price < 1 {
+		return nil, errDomain.NewError("価格の値が不正です 。")
+	}
+
+	// // 在庫はないけど、商品は登録したい等あるため、0は許容する
+	if stock < 0 {
+		return nil, errDomain.NewError("在庫数の値が不正です 。")
+	}
+
 	return &Product{
 		id:          id,
 		ownerID:     ownerID,
