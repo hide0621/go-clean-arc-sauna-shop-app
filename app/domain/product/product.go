@@ -23,6 +23,43 @@ const (
 	descriptionLengthMax = 1000
 )
 
+// データベースから取得した既存のIDを用いて商品オブジェクトを再構築
+func Reconstruct(
+	id string,
+	ownerID string,
+	name string,
+	description string,
+	price int64,
+	stock int,
+) (*Product, error) {
+	return newProduct(
+		id,
+		ownerID,
+		name,
+		description,
+		price,
+		stock,
+	)
+}
+
+// 新しいIDを生成し、それをもとに商品オブジェクトを生成
+func NewProduct(
+	ownerID string,
+	name string,
+	description string,
+	price int64,
+	stock int,
+) (*Product, error) {
+	return newProduct(
+		ulid.NewULID(),
+		ownerID,
+		name,
+		description,
+		price,
+		stock,
+	)
+}
+
 func newProduct(
 	id string,
 	ownerID string,
