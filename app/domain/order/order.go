@@ -1,6 +1,10 @@
 package order
 
-import "time"
+import (
+	"context"
+	cartDomain "go-clean-arc-sauna-shop-app/app/domain/cart"
+	"time"
+)
 
 type Order struct {
 	id          string
@@ -16,4 +20,9 @@ type OrderProduct struct {
 	productID string
 	price     int64
 	quantity  int
+}
+
+// ユースケースのテスト容易性のためインターフェース化する(モックオブジェクトを作れる)
+type OrderDomainService interface {
+	OrderProducts(ctx context.Context, cart *cartDomain.Cart, now time.Time)
 }
