@@ -3,6 +3,9 @@ package product
 import (
 	"go-clean-arc-sauna-shop-app/pkg/ulid"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestNewProduct(t *testing.T) {
@@ -89,6 +92,32 @@ func TestNewProduct(t *testing.T) {
 			want:    nil,
 			wantErr: true,
 		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := NewProduct(tt.args.ownerID,
+				tt.args.name,
+				tt.args.description,
+				tt.args.price,
+				tt.args.stock)
+			// テストがこけるかチェック
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewProduct() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			diff := cmp.Diff(
+				got,
+				tt.want,
+				// 以下の２つの関数により構造体Productのidフィールドを無視することができる
+				cmp.AllowUnexported(Product{}),
+				cmpopts.IgnoreFields(Product{}, "id"),
+			)
+			// テストがこけるかチェック
+			if diff != "" {
+				t.Errorf("NewProduct() = %v, want %v. error is %s", got, tt.want, err)
+			}
+		})
 	}
 
 }
