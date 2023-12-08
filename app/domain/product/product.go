@@ -68,7 +68,7 @@ func newProduct(
 	price int64,
 	stock int) (*Product, error) {
 
-	if !ulid.Isvalid(ownerID) {
+	if !ulid.IsValid(ownerID) {
 		return nil, errDomain.NewError("オーナーIDの値が不正です 。")
 	}
 
@@ -99,6 +99,37 @@ func newProduct(
 	}, nil
 }
 
+func (p *Product) Consume(quantity int) error {
+
+	// こっちでは？
+	if p.stock < 0 {
+		errDomain.NewError("在庫数の値が不正です。")
+	}
+
+	// こっちではなく
+	/*
+		if quantity < 0 {
+			return errDomain.NewError("在庫数の値が不正です。")
+		}
+	*/
+
+	// この処理も必要では？
+	if quantity < 0 {
+		errDomain.NewError("注文数が不正です")
+	}
+
+	if p.stock-quantity < 0 {
+		errDomain.NewError("在庫数が不足しています。")
+	}
+
+	p.stock -= quantity
+	return nil
+}
+
 func (p *Product) ID() string {
 	return p.id
+}
+
+func (p *Product) Price() int64 {
+	return p.price
 }
