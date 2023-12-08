@@ -61,4 +61,15 @@ func (ds *orderDomainService) OrderProduct(
 			return "", err
 		}
 	}
+
+	// 注文した商品を履歴として保存する
+	o, err := NewOrder(cart.UserID(), OrderProducts(ops).TotalAmount(), ops, now)
+	if err != nil {
+		return "", err
+	}
+	if err := ds.orderRepo.Save(ctx, o); err != nil {
+		return "", nil
+	}
+
+	return o.ID(), nil
 }
