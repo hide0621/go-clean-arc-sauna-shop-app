@@ -24,5 +24,5 @@ type OrderProduct struct {
 
 // ユースケースのテスト容易性のためインターフェース化する(モックオブジェクトを作れる)
 type OrderDomainService interface {
-	OrderProducts(ctx context.Context, cart *cartDomain.Cart, now time.Time)
+	OrderProducts(ctx context.Context, cart *cartDomain.Cart, now time.Time) (string, error)
 }

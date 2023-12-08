@@ -98,3 +98,7 @@ func newProduct(
 		stock:       stock,
 	}, nil
 }
+
+func (p *Product) ID() string {
+	return p.id
+}
