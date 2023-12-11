@@ -20,3 +20,8 @@ func NewSaveOrderUseCase(
 		cartRepo:           cartRepo,
 	}
 }
+
+type SaveOrderUseCaseInputDto struct {
+	ProductID string
+	Quantity  int
+}
