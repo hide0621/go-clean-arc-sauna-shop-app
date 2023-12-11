@@ -23,7 +23,7 @@ func NewOrderDomainService(
 	}
 }
 
-func (ds *orderDomainService) OrderProduct(
+func (ds *orderDomainService) OrderProducts(
 	ctx context.Context,
 	cart *cartDomain.Cart,
 	now time.Time,
