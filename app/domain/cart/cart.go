@@ -1,5 +1,9 @@
 package cart
 
+import (
+	errDomain "go-clean-arc-sauna-shop-app/app/domain/error"
+)
+
 type cartProduct struct {
 	productID string
 	quantity  int
@@ -32,4 +36,15 @@ func (cp *cartProduct) Quantity() int {
 
 func (c *Cart) UserID() string {
 	return c.userID
+}
+
+func (c *Cart) QuantityByProductID(productID string) (int, error) {
+
+	for _, product := range c.products {
+		if product.productID == productID {
+			return product.quantity, nil
+		}
+	}
+
+	return 0, errDomain.NewError("カートの商品が見つかりません。")
 }
