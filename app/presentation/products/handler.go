@@ -4,6 +4,8 @@ import (
 	"go-clean-arc-sauna-shop-app/app/application/product"
 	"go-clean-arc-sauna-shop-app/app/presentation/settings"
 
+	validator "go-clean-arc-sauna-shop-app/pkg/validator"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,9 +34,32 @@ type PostProductsParams struct {
 
 func (h handler) PostProducts(ctx *gin.Context) {
 
+	// リクエストパラメータの取得
 	var params PostProductsParams
 	err := ctx.ShouldBindJSON(&params)
 	if err != nil {
 		settings.ReturnBadRequest(ctx, err)
 	}
+
+	// バリデーションの実行
+	validate := validator.GetValidator()
+	err = validate.Struct(params)
+	if err != nil {
+		settings.ReturnStatusBadRequest(ctx, err)
+	}
+
+	// ユースケースで定義した InputDto へ データを詰め替え
+	input := product.SaveProductUseCaseInputDto{
+		OwnerID:     params.OwnerID,
+		Name:        params.Name,
+		Description: params.Description,
+		Price:       params.Price,
+		Stock:       params.Stock,
+	}
+
+	dto, err := h.saveProductUseCase.Run(ctx, input)
+	if err != nil {
+		settings.ReturnError(ctx, err)
+	}
+
 }
