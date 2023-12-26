@@ -57,9 +57,23 @@ func (h handler) PostProducts(ctx *gin.Context) {
 		Stock:       params.Stock,
 	}
 
+	// ユースケースを呼び出す
 	dto, err := h.saveProductUseCase.Run(ctx, input)
 	if err != nil {
 		settings.ReturnError(ctx, err)
 	}
+
+	// レスポンスを作成
+	response := postProductResponse{
+		productResponseModel{
+			Id:          dto.ID,
+			OwnerID:     dto.OwnerID,
+			Name:        dto.Name,
+			Description: dto.Description,
+			Price:       dto.Price,
+			Stock:       dto.Stock,
+		},
+	}
+	settings.ReturnStatusCreated(ctx, response)
 
 }
