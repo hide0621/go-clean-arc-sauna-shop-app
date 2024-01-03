@@ -11,7 +11,7 @@ type productResponseModel struct {
 
 type getProductsResponse struct {
 	*productResponseModel
-	OwnerName string `json:owner_name`
+	OwnerName string `json:"owner_name"`
 }
 
 type postProductResponse struct {
