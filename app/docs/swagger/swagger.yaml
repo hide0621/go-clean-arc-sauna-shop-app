@@ -32,8 +32,12 @@ definitions:
       stock:
         type: integer
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: 説明
+  title: コードカキタイ
+  version: バージョン(1.0)
 paths:
   /v1/products:
     post:

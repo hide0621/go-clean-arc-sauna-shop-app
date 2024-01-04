@@ -1,8 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "説明",
+        "title": "コードカキタイ",
+        "contact": {},
+        "version": "バージョン(1.0)"
     },
+    "host": "localhost:8080",
     "paths": {
         "/v1/products": {
             "post": {
